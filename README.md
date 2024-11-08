@@ -12,6 +12,7 @@ Este proyecto de Machine Learning tiene como objetivo predecir si un paciente ti
 - [**Entrenamiento del Modelo**](#entrenamiento-del-modelo)
 - [**Evaluación**](#evaluación)
 - [**Conclusiones**](#conclusiones)
+- [**Demostración en Video**](#demostración-en-video)
 - [**Requisitos**](#requisitos)
 
 ---
@@ -71,6 +72,14 @@ Los resultados obtenidos mostraron que el modelo tiene un alto grado de precisi�
 
 ## **Conclusiones**
 Este modelo es útil en el ámbito clínico, proporcionando una herramienta adicional para la clasificación y detección de diabetes en pacientes. Las variables más significativas pueden ayudar a entender mejor los factores que influyen en la diabetes y permitir la prevención temprana.
+
+---
+
+## **Demostración en Video**
+
+Para una explicación visual completa del proyecto y su funcionamiento, puedes ver el video en YouTube haciendo clic en el siguiente enlace:
+
+[![YouTube](https://img.shields.io/badge/YouTube-Video-red?logo=youtube&logoColor=white)](https://youtu.be/pfe2VNjNwCk)
 
 ---
 
