@@ -1,6 +1,6 @@
 # **Predicción de Diabetes con Machine Learning**
 
-Este proyecto de Machine Learning tiene como objetivo predecir si una paciente tiene diabetes tipo 1, tipo 2 o no tiene diabetes en función de diversos factores. Se emplean técnicas de clasificación con un enfoque en limpieza, análisis y visualización de datos, junto con el uso del modelo RandomForest.
+Este proyecto de Machine Learning tiene como objetivo predecir si un paciente tiene prediabetes, diabetes, o no tiene diabetes en función de diversos factores. Se emplean técnicas de clasificación con un enfoque en limpieza, análisis y visualización de datos, junto con el uso del modelo RandomForest.
 
 ---
 
