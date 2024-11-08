@@ -13,7 +13,6 @@ Este proyecto de Machine Learning tiene como objetivo predecir si un paciente ti
 - [**Evaluación**](#evaluación)
 - [**Conclusiones**](#conclusiones)
 - [**Requisitos**](#requisitos)
-- [**Ejecución**](#ejecución)
 
 ---
 
