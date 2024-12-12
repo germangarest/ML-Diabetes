@@ -2,6 +2,8 @@
 
 Este proyecto de Machine Learning tiene como objetivo predecir si un paciente tiene prediabetes, diabetes, o no tiene diabetes en función de diversos factores. Se emplean técnicas de clasificación con un enfoque en limpieza, análisis y visualización de datos, junto con el uso del modelo RandomForest.
 
+![Diabetes](img/diabetes.jpg) 
+
 ---
 
 ## **Tabla de Contenidos**
