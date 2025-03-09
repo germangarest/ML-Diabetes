@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiabetesDetect | Resultados</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/diabetes-icon.png') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="brand-logo">
+                    <i class="fas fa-clipboard-check"></i> Resultados
+                </div>
+                <p class="lead">Análisis completo de tu riesgo de diabetes</p>
+            </div>
+        </header>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header {{ 'bg-warning' if result.prediction == 1 else 'bg-success' }} text-white">
+                        {% if result.prediction == 1 %}
+                            <i class="fas fa-exclamation-triangle fa-lg"></i>
+                            <span>Riesgo Elevado de Diabetes</span>
+                        {% else %}
+                            <i class="fas fa-check-circle fa-lg"></i>
+                            <span>Riesgo Bajo de Diabetes</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-5">
+                            <div class="probability-chart-container">
+                                <canvas id="probabilityGauge" width="300" height="150"></canvas>
+                                <div class="chart-label">
+                                    <p class="chart-value">{{ "%.1f"|format(result.probability) }}%</p>
+                                    <p class="chart-label-text">Probabilidad</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="result-interpretation mb-4">
+                                    <h4 class="border-bottom pb-2">
+                                        <i class="fas fa-stethoscope"></i> Interpretación
+                                    </h4>
+                                    
+                                    <p>
+                                        {% if result.prediction == 1 %}
+                                            Según nuestro modelo de IA, presentas un <strong>riesgo elevado</strong> de desarrollar diabetes. 
+                                            La probabilidad estimada es del <strong>{{ "%.1f"|format(result.probability) }}%</strong>.
+                                        {% else %}
+                                            Según nuestro modelo de IA, presentas un <strong>riesgo bajo</strong> de desarrollar diabetes. 
+                                            La probabilidad estimada es del <strong>{{ "%.1f"|format(result.probability) }}%</strong>.
+                                        {% endif %}
+                                    </p>
+                                    
+                                    <div class="alert {{ 'alert-warning' if result.prediction == 1 else 'alert-info' }}">
+                                        <i class="fas fa-info-circle fa-lg"></i>
+                                        <div>
+                                            Tu IMC está en la categoría <strong>{{ result.bmi_category }}</strong>,
+                                            {% if result.bmi_category in ["Sobrepeso", "Obesidad"] %}
+                                                lo que puede contribuir a un mayor riesgo de diabetes.
+                                            {% else %}
+                                                lo que es favorable para prevenir la diabetes.
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="risk-factors mb-4">
+                                    <h4 class="border-bottom pb-2">
+                                        <i class="fas fa-chart-bar"></i> Factores de Riesgo
+                                    </h4>
+                                    
+                                    {% if result.risk_factors %}
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Factor</th>
+                                                        <th>Nivel de Riesgo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for factor, level in result.risk_factors %}
+                                                        <tr>
+                                                            <td>{{ factor }}</td>
+                                                            <td>
+                                                                <span class="badge {{ 'badge-high' if level == 'Alto' else 'badge-moderate' }}">
+                                                                    {{ level }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p>No se identificaron factores de riesgo significativos.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="recommendations mb-4">
+                                    <h4 class="border-bottom pb-2">
+                                        <i class="fas fa-lightbulb text-warning"></i> Recomendaciones Personalizadas
+                                    </h4>
+                                    
+                                    <div class="list-group mt-3">
+                                        {% for advice in result.health_advice %}
+                                            <div class="list-group-item">
+                                                <div class="recommendation-icon">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <div>{{ advice }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                                <div class="next-steps">
+                                    <h4 class="border-bottom pb-2">
+                                        <i class="fas fa-arrow-right"></i> Próximos Pasos
+                                    </h4>
+                                    
+                                    <div class="d-grid gap-3 mt-3">
+                                        {% if result.prediction == 1 %}
+                                            <a href="{{ url_for('plan_prevencion') }}" class="btn btn-primary">
+                                                <i class="fas fa-heartbeat"></i> Plan de prevención personalizado
+                                            </a>
+                                            <a href="{{ url_for('consejos_alimentacion') }}" class="btn btn-outline-secondary">
+                                                <i class="fas fa-apple-alt"></i> Consejos de alimentación saludable
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('plan_prevencion') }}" class="btn btn-success">
+                                                <i class="fas fa-heartbeat"></i> Plan de prevención personalizado
+                                            </a>
+                                            <a href="{{ url_for('consejos_alimentacion') }}" class="btn btn-outline-secondary">
+                                                <i class="fas fa-apple-alt"></i> Consejos de alimentación saludable
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="disclaimer alert alert-secondary mt-4">
+                            <i class="fas fa-exclamation-circle fa-lg"></i>
+                            <div>
+                                <strong>Importante:</strong> Esta evaluación no sustituye el diagnóstico médico profesional. Si tienes preocupaciones sobre tu salud, consulta con un profesional médico.
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                                <i class="fas fa-redo"></i> Realizar Otra Evaluación
+                            </a>
+                            <button class="btn btn-outline-secondary" id="printResults">
+                                <i class="fas fa-print"></i> Imprimir Resultados
+                            </button>
+                            <button class="btn btn-success" id="shareResults">
+                                <i class="fas fa-share-alt"></i> Compartir Resultados
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para compartir resultados -->
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="shareModalLabel">
+                        <i class="fas fa-share-alt"></i> Compartir Resultados
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Comparte tus resultados con un profesional médico o con un ser querido:</p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="shareLink" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="copyLink">
+                            <i class="fas fa-copy"></i> Copiar
+                        </button>
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="#" class="btn btn-primary" id="emailLink">
+                            <i class="fas fa-envelope"></i> Enviar por Email
+                        </a>
+                        <a href="#" class="btn btn-success" id="whatsappLink">
+                            <i class="fab fa-whatsapp"></i> Compartir por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer modificado -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-medkit"></i> DiabetesDetect
+                </div>
+                <div class="footer-author">
+                    <span>Desarrollado por <span class="author-name">Germán García Estévez</span></span>
+                    <a href="https://github.com/germangarest" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/germangarest" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar el gráfico de probabilidad
+            const ctx = document.getElementById('probabilityGauge').getContext('2d');
+            const probability = {{ result.probability }};
+            
+            // Determinar el color basado en la probabilidad
+            let gradientColor;
+            if (probability > 70) {
+                gradientColor = ['#ff4d6d', '#f72585']; // Rojo para alto riesgo
+            } else if (probability > 30) {
+                gradientColor = ['#ffc300', '#ff9e00']; // Amarillo para riesgo moderado
+            } else {
+                gradientColor = ['#4cc9f0', '#4361ee']; // Azul para riesgo bajo
+            }
+            
+            // Crear gradiente
+            let gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            gradient.addColorStop(0, gradientColor[0]);
+            gradient.addColorStop(1, gradientColor[1]);
+            
+            const gaugeChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [probability, 100 - probability],
+                        backgroundColor: [
+                            gradient,
+                            '#e9ecef'
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    circumference: 180,
+                    rotation: -90,
+                    cutout: '75%',
+                    plugins: {
+                        tooltip: {
+                            enabled: false
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true
+                    }
+                }
+            });
+            
+            // Función para imprimir resultados
+            document.getElementById('printResults').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // Compartir resultados
+            document.getElementById('shareResults').addEventListener('click', function() {
+                const shareUrl = window.location.origin + '/share?p={{ result.probability }}&r={{ result.prediction }}';
+                document.getElementById('shareLink').value = shareUrl;
+                
+                // Estas líneas corregidas usan la variable probability de JavaScript, no la expresión Jinja
+                const emailBody = `Hola, quiero compartir mis resultados de riesgo de diabetes de DiabetesDetect. Mi probabilidad es ${probability}%. Puedes ver más detalles en: ${shareUrl}`;
+                document.getElementById('emailLink').href = `mailto:?subject=Mis resultados de DiabetesDetect&body=${encodeURIComponent(emailBody)}`;
+                
+                const whatsappText = `Mis resultados de DiabetesDetect: Probabilidad de diabetes ${probability}%. Ver más: ${shareUrl}`;
+                document.getElementById('whatsappLink').href = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+                
+                const shareModal = new bootstrap.Modal(document.getElementById('shareModal'));
+                shareModal.show();
+            });
+            
+            // Copiar enlace
+            document.getElementById('copyLink').addEventListener('click', function() {
+                const shareLink = document.getElementById('shareLink');
+                shareLink.select();
+                document.execCommand('copy');
+                this.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copiar';
+                }, 2000);
+            });
+            
+            // Animación al cargar la página
+            document.querySelectorAll('.card, .alert, .list-group-item').forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 100 + (index * 50));
+            });
+        });
+    </script>
+</body>
+</html>

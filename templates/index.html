@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiabetesDetect | Evaluación de Riesgo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/diabetes-icon.png') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="brand-logo">
+                    <i class="fas fa-medkit"></i> DiabetesDetect
+                </div>
+                <p class="lead">Evaluación avanzada de riesgo de diabetes mediante inteligencia artificial</p>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-clipboard-list fa-lg"></i>
+                        <span>Evaluación Personalizada</span>
+                    </div>
+                    <div class="card-body">
+                        <form id="diabetesForm" action="{{ url_for('predict') }}" method="post">
+                            <div class="mb-4">
+                                <label for="bmi" class="form-label">
+                                    <i class="fas fa-weight"></i> Índice de Masa Corporal (IMC)
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="bmi" name="bmi" step="0.1" min="10" max="100" required placeholder="Ej: 24.5">
+                                    <span class="input-group-text">kg/m²</span>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-calculator"></i> ¿No conoces tu IMC? <a href="#" data-bs-toggle="modal" data-bs-target="#bmiCalculatorModal">Calcúlalo aquí</a>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="pre_existing_conditions" class="form-label">
+                                    <i class="fas fa-notes-medical"></i> Condiciones de Salud Preexistentes
+                                </label>
+                                <select class="form-select" id="pre_existing_conditions" name="pre_existing_conditions" required>
+                                    <option value="" selected disabled>Selecciona cuántas condiciones tienes</option>
+                                    <option value="0">Ninguna</option>
+                                    <option value="1">1 condición</option>
+                                    <option value="2">2 condiciones</option>
+                                    <option value="3">3 condiciones</option>
+                                    <option value="4">4 condiciones</option>
+                                </select>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle"></i> Presión arterial alta, colesterol alto, enfermedad cardíaca o accidente cerebrovascular
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="gen_hlth" class="form-label">
+                                    <i class="fas fa-heart"></i> Salud General
+                                </label>
+                                <select class="form-select" id="gen_hlth" name="gen_hlth" required>
+                                    <option value="" selected disabled>¿Cómo calificarías tu salud general?</option>
+                                    <option value="1">Excelente</option>
+                                    <option value="2">Muy buena</option>
+                                    <option value="3">Buena</option>
+                                    <option value="4">Regular</option>
+                                    <option value="5">Mala</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="age" class="form-label">
+                                    <i class="fas fa-birthday-cake"></i> Grupo de Edad
+                                </label>
+                                <select class="form-select" id="age" name="age" required>
+                                    <option value="" selected disabled>Selecciona tu grupo de edad</option>
+                                    <option value="1">18-24 años</option>
+                                    <option value="2">25-29 años</option>
+                                    <option value="3">30-34 años</option>
+                                    <option value="4">35-39 años</option>
+                                    <option value="5">40-44 años</option>
+                                    <option value="6">45-49 años</option>
+                                    <option value="7">50-54 años</option>
+                                    <option value="8">55-59 años</option>
+                                    <option value="9">60-64 años</option>
+                                    <option value="10">65-69 años</option>
+                                    <option value="11">70-74 años</option>
+                                    <option value="12">75-79 años</option>
+                                    <option value="13">80 años o más</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="diff_walk" class="form-label">
+                                    <i class="fas fa-walking"></i> Dificultad para Caminar
+                                </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="diff_walk" id="diff_walk_no" value="0" required>
+                                    <label class="form-check-label" for="diff_walk_no">
+                                        No tengo dificultades serias para caminar o subir escaleras
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="diff_walk" id="diff_walk_yes" value="1">
+                                    <label class="form-check-label" for="diff_walk_yes">
+                                        Tengo dificultades serias para caminar o subir escaleras
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-search"></i> Evaluar mi Riesgo
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-chart-pie fa-lg"></i>
+                        <span>Precisión del Modelo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <canvas id="accuracyChart" width="200" height="200"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="mb-3">Modelo de IA Avanzado</h5>
+                                <p>Nuestro modelo predictivo fue entrenado con datos de más de 200,000 personas y alcanzó una precisión del <strong>83.58%</strong> en la identificación de casos de diabetes.</p>
+                                <p>Utilizamos <strong>XGBoost</strong>, uno de los algoritmos de machine learning más potentes, para garantizar los mejores resultados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header bg-info text-white">
+                        <i class="fas fa-info-circle fa-lg"></i>
+                        <span>Sobre la Diabetes</span>
+                    </div>
+                    <div class="card-body">
+                        <p>La diabetes es una enfermedad crónica que afecta la forma en que el cuerpo procesa la glucosa (azúcar). Existen diferentes tipos, siendo los más comunes la diabetes tipo 1, tipo 2 y gestacional.</p>
+                        
+                        <div class="info-card">
+                            <div class="info-card-title">
+                                <div class="info-card-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <span>Factores de Riesgo</span>
+                            </div>
+                            <ul class="mb-0">
+                                <li>Sobrepeso u obesidad</li>
+                                <li>Presión arterial alta</li>
+                                <li>Colesterol alto</li>
+                                <li>Antecedentes familiares</li>
+                                <li>Edad avanzada</li>
+                                <li>Estilo de vida sedentario</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-title">
+                                <div class="info-card-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <span>Síntomas Comunes</span>
+                            </div>
+                            <ul class="mb-0">
+                                <li>Sed excesiva y micción frecuente</li>
+                                <li>Aumento del hambre</li>
+                                <li>Pérdida de peso inexplicable</li>
+                                <li>Fatiga y debilidad</li>
+                                <li>Visión borrosa</li>
+                                <li>Heridas que tardan en sanar</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-hand-point-right fa-lg"></i>
+                            <div>
+                                Esta herramienta ofrece una evaluación de riesgo, pero <strong>no sustituye el diagnóstico médico profesional</strong>. Consulta siempre con tu médico.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-shield-alt fa-lg"></i>
+                        <span>Prevención</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 mb-4">
+                                <div class="feature-icon mx-auto">
+                                    <i class="fas fa-apple-alt"></i>
+                                </div>
+                                <h5>Alimentación</h5>
+                                <p class="mb-0">Dieta equilibrada con frutas, verduras y cereales integrales.</p>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <div class="feature-icon mx-auto">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <h5>Ejercicio</h5>
+                                <p class="mb-0">Al menos 150 minutos de actividad física a la semana.</p>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <div class="feature-icon mx-auto">
+                                    <i class="fas fa-weight"></i>
+                                </div>
+                                <h5>Peso Saludable</h5>
+                                <p class="mb-0">Mantener un IMC por debajo de 25 kg/m².</p>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <div class="feature-icon mx-auto">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <h5>Chequeos</h5>
+                                <p class="mb-0">Visitas regulares al médico para control preventivo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Calculadora de IMC -->
+    <div class="modal fade" id="bmiCalculatorModal" tabindex="-1" aria-labelledby="bmiCalculatorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="bmiCalculatorModalLabel">
+                        <i class="fas fa-calculator"></i> Calculadora de IMC
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="height" class="form-label">Altura (cm)</label>
+                        <input type="number" class="form-control" id="height" min="100" max="250" step="1" placeholder="Ej: 170">
+                    </div>
+                    <div class="mb-3">
+                        <label for="weight" class="form-label">Peso (kg)</label>
+                        <input type="number" class="form-control" id="weight" min="30" max="300" step="0.1" placeholder="Ej: 70.5">
+                    </div>
+                    <div id="bmiResult" class="alert alert-info d-none">
+                        Tu IMC es: <span id="bmiValue">0</span> - <span id="bmiCategory"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="calculateBmi">Calcular</button>
+                    <button type="button" class="btn btn-success d-none" id="useBmiValue">Usar este valor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer modificado -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-medkit"></i> DiabetesDetect
+                </div>
+                <div class="footer-author">
+                    <span>Desarrollado por <span class="author-name">Germán García Estévez</span></span>
+                    <a href="https://github.com/germangarest" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/germangarest" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

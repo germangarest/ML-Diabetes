@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consejos de Alimentación | DiabetesDetect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/diabetes-icon.png') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="brand-logo">
+                    <i class="fas fa-apple-alt"></i> Consejos de Alimentación
+                </div>
+                <p class="lead">Guía nutricional para reducir el riesgo de diabetes</p>
+            </div>
+        </header>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-utensils fa-lg"></i>
+                        <span>Alimentación Saludable para Prevenir la Diabetes</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h4 class="border-bottom pb-2">Principios Básicos</h4>
+                            <p>Una alimentación equilibrada y consciente es fundamental para mantener niveles saludables de glucosa en sangre y prevenir la diabetes. Estos son los principios más importantes:</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-4 mb-4 text-center">
+                                    <div class="feature-icon mx-auto">
+                                        <i class="fas fa-balance-scale"></i>
+                                    </div>
+                                    <h5>Control de Porciones</h5>
+                                    <p>Controla el tamaño de las porciones para mantener un balance calórico adecuado.</p>
+                                </div>
+                                <div class="col-md-4 mb-4 text-center">
+                                    <div class="feature-icon mx-auto">
+                                        <i class="fas fa-carrot"></i>
+                                    </div>
+                                    <h5>Variedad de Alimentos</h5>
+                                    <p>Incluye una amplia variedad de alimentos naturales y frescos en tu dieta diaria.</p>
+                                </div>
+                                <div class="col-md-4 mb-4 text-center">
+                                    <div class="feature-icon mx-auto">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <h5>Regularidad</h5>
+                                    <p>Mantén horarios regulares de comida para ayudar a controlar los niveles de glucosa.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="border-bottom pb-2">Alimentos Recomendados</h4>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-6 mb-3">
+                                    <div class="info-card">
+                                        <div class="info-card-title">
+                                            <div class="info-card-icon">
+                                                <i class="fas fa-seedling"></i>
+                                            </div>
+                                            <span>Carbohidratos de Calidad</span>
+                                        </div>
+                                        <ul>
+                                            <li>Granos enteros (quinoa, avena, arroz integral)</li>
+                                            <li>Legumbres (frijoles, lentejas, garbanzos)</li>
+                                            <li>Frutas enteras (con moderación)</li>
+                                            <li>Verduras no almidonadas</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="info-card">
+                                        <div class="info-card-title">
+                                            <div class="info-card-icon">
+                                                <i class="fas fa-drumstick-bite"></i>
+                                            </div>
+                                            <span>Proteínas Saludables</span>
+                                        </div>
+                                        <ul>
+                                            <li>Pescados (especialmente grasos como salmón)</li>
+                                            <li>Aves sin piel</li>
+                                            <li>Legumbres y tofu</li>
+                                            <li>Frutos secos y semillas (sin sal)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="info-card">
+                                        <div class="info-card-title">
+                                            <div class="info-card-icon">
+                                                <i class="fas fa-oil-can"></i>
+                                            </div>
+                                            <span>Grasas Saludables</span>
+                                        </div>
+                                        <ul>
+                                            <li>Aceite de oliva extra virgen</li>
+                                            <li>Aguacate</li>
+                                            <li>Nueces y semillas</li>
+                                            <li>Pescados grasos</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="info-card">
+                                        <div class="info-card-title">
+                                            <div class="info-card-icon">
+                                                <i class="fas fa-glass-water"></i>
+                                            </div>
+                                            <span>Bebidas Recomendadas</span>
+                                        </div>
+                                        <ul>
+                                            <li>Agua (principal fuente de hidratación)</li>
+                                            <li>Té verde o negro sin azúcar</li>
+                                            <li>Infusiones de hierbas</li>
+                                            <li>Café sin azúcar (con moderación)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="border-bottom pb-2">Alimentos a Limitar</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-danger h-100">
+                                        <div class="card-body">
+                                            <h5><i class="fas fa-cookie-bite text-danger"></i> Carbohidratos Refinados</h5>
+                                            <ul>
+                                                <li>Pan blanco, arroz blanco, pasta refinada</li>
+                                                <li>Cereales azucarados</li>
+                                                <li>Galletas y productos de pastelería</li>
+                                                <li>Patatas fritas y snacks procesados</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-danger h-100">
+                                        <div class="card-body">
+                                            <h5><i class="fas fa-candy-cane text-danger"></i> Azúcares Añadidos</h5>
+                                            <ul>
+                                                <li>Refrescos y bebidas azucaradas</li>
+                                                <li>Zumos de frutas comerciales</li>
+                                                <li>Dulces, chocolates y postres azucarados</li>
+                                                <li>Salsas comerciales (ketchup, BBQ)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="border-bottom pb-2">Ejemplo de Menú Diario</h4>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Comida</th>
+                                            <th>Alimentos Recomendados</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Desayuno</strong></td>
+                                            <td>Avena con canela, nueces y un poco de fruta fresca<br>Té verde o café sin azúcar</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Media mañana</strong></td>
+                                            <td>Un puñado pequeño de almendras o una fruta</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Almuerzo</strong></td>
+                                            <td>Ensalada mixta con verduras variadas<br>Proteína magra (pollo, pescado o tofu)<br>Una porción pequeña de legumbres o arroz integral<br>Aceite de oliva como aderezo</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Merienda</strong></td>
+                                            <td>Yogur natural sin azúcar con semillas de chía</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cena</strong></td>
+                                            <td>Verduras al vapor o salteadas<br>Pescado o proteína vegetal<br>Porción pequeña de batata o quinoa</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success">
+                            <i class="fas fa-lightbulb fa-lg"></i>
+                            <div>
+                                <strong>Consejo práctico:</strong> Prepara tus comidas con anticipación y mantén opciones saludables fácilmente disponibles para evitar recurrir a opciones poco saludables cuando tengas hambre.
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                                <i class="fas fa-home"></i> Volver al Inicio
+                            </a>
+                            <a href="{{ url_for('plan_prevencion') }}" class="btn btn-success">
+                                <i class="fas fa-heartbeat"></i> Ver Plan de Prevención
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-medkit"></i> DiabetesDetect
+                </div>
+                <div class="footer-author">
+                    <span>Desarrollado por <span class="author-name">Germán García Estévez</span></span>
+                    <a href="https://github.com/germangarest" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/germangarest" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
